@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CB6Project
+﻿namespace CB6Project
 {
     class Program
     {
         static void Main(string[] args)
         {
+            new LoginScreen().LoginMenu();
         }
+
     }
+
+
 }

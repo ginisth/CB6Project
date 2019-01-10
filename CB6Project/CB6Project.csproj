@@ -33,8 +33,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,11 +52,65 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LogFile.cs" />
+    <Compile Include="LoginScreen.cs" />
+    <Compile Include="UserDatabaseAccess.cs" />
+    <Compile Include="EFDatabase.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EFDatabase.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFDatabase.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EFDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EFDatabase.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EFDatabase.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Inputs.cs" />
+    <Compile Include="MainMenu.cs" />
+    <Compile Include="Message.cs">
+      <DependentUpon>EFDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessageDatabaseAccess.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoleType.cs">
+      <DependentUpon>EFDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StartPage.cs" />
+    <Compile Include="User.cs">
+      <DependentUpon>EFDatabase.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="EFDatabase.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EFDatabase.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="EFDatabase.edmx.diagram">
+      <DependentUpon>EFDatabase.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EFDatabase.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EFDatabase.Context.cs</LastGenOutput>
+      <DependentUpon>EFDatabase.edmx</DependentUpon>
+    </Content>
+    <Content Include="EFDatabase.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EFDatabase.edmx</DependentUpon>
+      <LastGenOutput>EFDatabase.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
