@@ -7,7 +7,8 @@ namespace CB6Project
     {
         public static void Log(string logSender, string logReceiver, string logData)
         {
-            string path = @"C:\Users\Public\Log.txt";
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            path = path + @"\Log.txt";
             if (File.Exists(path))
             {
                 StreamWriter writer = File.AppendText(path);
