@@ -7,22 +7,32 @@ namespace CB6Project
     {
         public static void Log(string logSender, string logReceiver, string logData)
         {
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            path = path + @"\Log.txt";
-            if (File.Exists(path))
+            try
             {
-                StreamWriter writer = File.AppendText(path);
-                writer.WriteLine($"Date:{DateTime.Now}--from:{logSender}--to:{logReceiver}--data:{logData}");
-                writer.Close();
+                string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                path = path + @"\Log.txt";
+                if (File.Exists(path))
+                {
+                    StreamWriter writer = File.AppendText(path);
+                    writer.WriteLine($"Date:{DateTime.Now}--from:{logSender}--to:{logReceiver}--data:{logData}");
+                    writer.Close();
+                }
+                else
+                {
+                    // .Dispose closes the stream
+                    File.Create(path).Dispose();
+                    var writer = new StreamWriter(path);
+                    writer.WriteLine($"Date:{DateTime.Now}--from:{logSender}--to:{logReceiver}--data:{logData}");
+                    writer.Close();
+
+                }
             }
-            else
+            catch (Exception)
             {
-                // .Dispose closes the stream
-                File.Create(path).Dispose();
-                var writer = new StreamWriter(path);
-                writer.WriteLine($"Date:{DateTime.Now}--from:{logSender}--to:{logReceiver}--data:{logData}");
-                writer.Close();
-            }
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Something went wrong with the text file creation.");
+                Console.ResetColor();
+            }  
         }
 
     }

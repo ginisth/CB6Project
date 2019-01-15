@@ -43,7 +43,9 @@ namespace CB6Project
             }
             catch (Exception e)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("An error occurred.Restart the app.\n\n" + e.Message);
+                Console.ResetColor();
                 Console.ReadKey();
             }
         }
