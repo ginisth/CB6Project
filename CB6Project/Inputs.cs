@@ -39,14 +39,6 @@ namespace CB6Project
             return input;
         }
 
-        public static bool CheckPoint()
-        {
-            ConsoleKey key = Console.ReadKey().Key;
-            if (key == ConsoleKey.Escape)
-                return false;
-            else
-                return true;
-        }
 
         public static string InputForPassword()
         {

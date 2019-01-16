@@ -4,26 +4,28 @@ namespace CB6Project
 {
     class MainMenu
     {
-        private readonly string _username;
+        private  User _username { get; set; }
         private readonly RoleType _roleType;
         private bool remain = true;
         private ConsoleKey key;
 
-        public MainMenu(string username)
+        public MainMenu(User username)
         {
             _username = username;
-            _roleType = UserDatabaseAccess.FindRole(_username);
+            _roleType = _username.Role;
         }
 
 
         public void UsersMenu()
         {
+           var option = new MenuOptions(_username);
+
             do
             {
                 Console.Clear();
                 MainMenuHeader();
                 // Check for unread messages.
-                MessageDatabaseAccess.UnreadMessage(_username);
+                option.UnreadMessages();
 
                 Console.WriteLine("-->Press the corresponding key");
                 switch (_roleType)
@@ -52,39 +54,37 @@ namespace CB6Project
                 switch (key = Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.D1:
-                        MessageDatabaseAccess.Inbox(_username);
+                        option.Inbox();
                         break;
                     case ConsoleKey.D2:
-                        MessageDatabaseAccess.Outbox(_username);
+                        option.Outbox();
                         break;
                     case ConsoleKey.D3:
-                        MessageDatabaseAccess.SendMessage(_username);
+                        option.SendMessage();
                         break;
                     case ConsoleKey.D4 when _roleType != RoleType.CustomUser:
-                        MessageDatabaseAccess.ShowMessages();
+                        option.ShowMessages();
                         break;
                     case ConsoleKey.D5 when _roleType == RoleType.SuperMOD || _roleType == RoleType.Admin:
-                        MessageDatabaseAccess.EditMessage(_username);
+                        option.EditMessage();
                         break;
                     case ConsoleKey.D6 when _roleType == RoleType.Admin:
-                        MessageDatabaseAccess.DeleteMessage();
+                        option.DeleteMessage();
                         break;
                     case ConsoleKey.D7 when _roleType == RoleType.Admin:
-                        UserDatabaseAccess.ShowUsers();
+                        option.ShowUsers();
                         break;
                     case ConsoleKey.D8 when _roleType == RoleType.Admin:
-                        UserDatabaseAccess.AddUser();
+                        option.AddUser();
                         break;
                     case ConsoleKey.D9 when _roleType == RoleType.Admin:
-                        UserDatabaseAccess.DeleteUser(_username);
+                        option.DeleteUser();
                         break;
                     case ConsoleKey.Q when _roleType == RoleType.Admin:
-                        UserDatabaseAccess.UpdateRole(_username);
+                        option.UpdateRole();
                         break;
                     case ConsoleKey.W when _roleType == RoleType.Admin:
-                        // Passing null parameter
-                        // That way even tha admin can change his data.
-                        UserDatabaseAccess.UpdateUser(null);
+                        option.UpdateUser();
                         break;
                     case ConsoleKey.Escape:
                         remain = false;

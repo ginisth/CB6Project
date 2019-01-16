@@ -8,29 +8,20 @@ namespace CB6Project
         {
             try
             {
-                bool remain = true;
-                // A user with admin privileges is created if there is no user stored in the database
-                UserDatabaseAccess.FirstTimeRegister();
-
                 do
                 {
                     Console.Clear();
-                    
-                    Header();
+
+                    LoginScreenHeader();
                     Console.WriteLine("-->Press the corresponding key\n#1.Login\n#2.Register\n#Esc.Exit");
                     ConsoleKey key = Console.ReadKey(true).Key;
                     switch (key)
                     {
                         case ConsoleKey.D1:
-                            (string checkUsername, bool remain2) = UserDatabaseAccess.ReturnValidUser();
-                            // Deconstruction of the tuple.If bool remain2=true the User can login.
-                            if (remain2 == false)
-                                break;
-                            Console.Clear();
-                            new MainMenu(checkUsername).UsersMenu();
+                            Login();
                             break;
                         case ConsoleKey.D2:
-                            UserDatabaseAccess.AddUser();
+                            Register();
                             break;
                         case ConsoleKey.Escape:
                             Environment.Exit(1);
@@ -39,30 +30,104 @@ namespace CB6Project
                             break;
 
                     }
-                } while (remain);
-            }
-            catch (Exception e)
+                } while (true);
+            }catch(Exception)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("An error occurred.Restart the app.\n\n" + e.Message);
+                Console.WriteLine("Something went wrong with the application.Restart.");
                 Console.ResetColor();
-                Console.ReadKey();
             }
         }
-        static void Header()
+
+        private void Login()
+        {
+            Console.Clear();
+            Console.WriteLine("--> Give username.");
+            string inputUsername = Inputs.InputForUsername();
+            Console.WriteLine("-->Give password.");
+            string inputPassword = Inputs.InputForPassword();
+            User user = DatabaseAccess.ReturnValidUser(inputUsername, inputPassword);
+            if (user == null)
+            {
+                Console.WriteLine("\nWrong username or password.Press any key to return back.");
+                Console.ReadKey();
+            }
+            else
+            {
+                WelcomeHeader();
+                new MainMenu(user).UsersMenu();
+            }
+        }
+
+        private void Register()
+        {
+            Console.Clear();
+            // Administrator is auto-created if there is no user stored in the database.
+            bool firstTimeRegister = DatabaseAccess.FirstTimeRegister();
+            if ( firstTimeRegister== true)
+            {
+                Console.WriteLine("Succecfully created Administrator!");
+                Console.WriteLine("From the Login screen,login with username:admin and password:admin" +
+                    " as administrator");
+            }
+            else
+            {
+                Console.WriteLine("Type the username of the new user");
+                string newUsername = Inputs.InputForUsername();
+                User checkUser = DatabaseAccess.FindUser(newUsername);
+                if (checkUser == null)
+                {
+                    Console.WriteLine("Type the password of the new user");
+                    string newPassword = Inputs.InputForPassword();
+                    User newUser = new User()
+                    {
+                        Username = newUsername,
+                        Password = newPassword,
+                        Role = RoleType.CustomUser
+                    };
+                    DatabaseAccess.AddUser(newUser);
+                    Console.WriteLine($"\n{newUsername} successfully created!");
+                }
+                else
+                    Console.WriteLine("Username already exists.");
+            }
+            Console.ReadKey();
+        }
+
+        static void LoginScreenHeader()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(@" _______  ______    ______    _______  _______  _______ _________ _______  _______ _________
-(  ____ \(  ___ \  / ____ \  (  ____ )(  ____ )(  ___  )\__    _/(  ____ \(  ____ \\__   __/
-| (    \/| (   ) )( (    \/  | (    )|| (    )|| (   ) |   )  (  | (    \/| (    \/   ) (   
-| |      | (__/ / | (____    | (____)|| (____)|| |   | |   |  |  | (__    | |         | |   
-| |      |  __ (  |  ___ \   |  _____)|     __)| |   | |   |  |  |  __)   | |         | |   
-| |      | (  \ \ | (   ) )  | (      | (\ (   | |   | |   |  |  | (      | |         | |   
-| (____/\| )___) )( (___) )  | )      | ) \ \__| (___) ||\_)  )  | (____/\| (____/\   | |   
-(_______/|/ \___/  \_____/   |/       |/   \__/(_______)(____/   (_______/(_______/   )_(   
-                                                                                            
+            Console.WriteLine(@" _______  _______        _______  _______ _________ _       
+(  ____ \(  ____ \      (       )(  ___  )\__   __/( \      
+| (    \/| (    \/      | () () || (   ) |   ) (   | (      
+| |      | |            | || || || (___) |   | |   | |      
+| | ____ | | ____       | |(_)| ||  ___  |   | |   | |      
+| | \_  )| | \_  )      | |   | || (   ) |   | |   | |      
+| (___) || (___) |      | )   ( || )   ( |___) (___| (____/\
+(_______)(_______)      |/     \||/     \|\_______/(_______/
+                                                            
 ");
             Console.ResetColor();
+        }
+
+
+        static void WelcomeHeader()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(@"          _______  _        _______  _______  _______  _______  _  _ 
+|\     /|(  ____ \( \      (  ____ \(  ___  )(       )(  ____ \( )( )
+| )   ( || (    \/| (      | (    \/| (   ) || () () || (    \/| || |
+| | _ | || (__    | |      | |      | |   | || || || || (__    | || |
+| |( )| ||  __)   | |      | |      | |   | || |(_)| ||  __)   | || |
+| || || || (      | |      | |      | |   | || |   | || (      (_)(_)
+| () () || (____/\| (____/\| (____/\| (___) || )   ( || (____/\ _  _ 
+(_______)(_______/(_______/(_______/(_______)|/     \|(_______/(_)(_)
+                                                                     
+");
+            Console.ResetColor();
+            Console.WriteLine("You have logged in successfully.Press any key to view the main menu");
+            Console.ReadKey();
         }
 
     }

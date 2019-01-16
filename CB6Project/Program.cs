@@ -1,4 +1,6 @@
-﻿namespace CB6Project
+﻿using System;
+
+namespace CB6Project
 {
     class Program
     {

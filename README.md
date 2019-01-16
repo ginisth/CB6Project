@@ -45,35 +45,4 @@ Specifically, the allocated marks for this section is as follows:
 8. Extra classes that you might need get 1 mark each with a total of 4 marks. [4 marks]
 Total marks for the Project = 100
 Oral Examination marks = 20
------------------------------------------------------------------------------------------------------------------------------------------
-The database is generated with EF(database first).
 
-Below is the query of the database creation:
-
-<<<
-create database ProjectDatabase
-
-create table Users
-(
-Uesrname nvarchar(20) primary key not null,
-Password nvarchar(20) not null,
-Role varchar(10) not null
-)
-
-EXEC sp_RENAME 'Users.Uesrname' , 'Username', 'COLUMN'
-
-create table Messages
-(
-Message_id int identity (1,1) primary key not null,
-Sender nvarchar(20) FOREIGN KEY REFERENCES Users(Username),
-Receiver nvarchar(20) FOREIGN KEY REFERENCES Users(Username),
-Message_Data nvarchar(250),
-SubscriptionDate datetime,
-Various nvarchar(50)
-)
-
-delete top(2) from Users
-
-alter table users
-alter column Role int not null
->>>

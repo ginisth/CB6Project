@@ -54,7 +54,8 @@
   <ItemGroup>
     <Compile Include="LogFile.cs" />
     <Compile Include="LoginScreen.cs" />
-    <Compile Include="UserDatabaseAccess.cs" />
+    <Compile Include="MenuOptions.cs" />
+    <Compile Include="DatabaseAccess.cs" />
     <Compile Include="EFDatabase.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -75,7 +76,6 @@
     <Compile Include="Message.cs">
       <DependentUpon>EFDatabase.tt</DependentUpon>
     </Compile>
-    <Compile Include="MessageDatabaseAccess.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleType.cs">
